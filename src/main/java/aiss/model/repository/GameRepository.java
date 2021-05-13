@@ -11,14 +11,14 @@ public interface GameRepository {
 	public Collection<Player> getAllPlayers();
 	public Player getPlayer(String playerId);
 	public void updatePlayer(Player p);
-	public void deletePlayer(String playerId);
+	public void removePlayer(String playerId);
 	
 	// Games
 	public void addGame(Game g);
 	public Collection<Game> getAllGames();
 	public Game getGame(String gameId);
 	public void updateGame(Game g);
-	public void deleteGame(String gameId);
+	public void removeGame(String gameId);
 	public void addMove(String gameId,String move);
 	public void addPlayMove(String gameId,String move);
 	
