@@ -14,96 +14,96 @@ import com.github.bhlangonijr.chesslib.move.MoveList;
 public class Game {
 	private String id;
 	private String fen;
-	private String image;
-	private String bestMove;
 	private String year;
 	private Player white;
 	private String result;
 	private Player black;
+	private String image;
+	private String bestMove;
 	
+<span class="fc" id="L24">	public Game() {}</span>
 	
-<span class="fc" id="L25">	public Game() {}</span>
-	
-<span class="nc" id="L27">	public Game(String fen) {</span>
-<span class="nc" id="L28">		this.fen = fen;</span>
-<span class="nc" id="L29">	}</span>
+<span class="nc" id="L26">	public Game(String fen) {</span>
+<span class="nc" id="L27">		this.fen = fen;</span>
+<span class="nc" id="L28">	}</span>
 	
 	public String getId() {
-<span class="nc" id="L32">		return id;</span>
+<span class="nc" id="L31">		return id;</span>
 	}
 
 	public void setId(String id) {
-<span class="nc" id="L36">		this.id = id;</span>
-<span class="nc" id="L37">	}</span>
+<span class="nc" id="L35">		this.id = id;</span>
+<span class="nc" id="L36">	}</span>
 
 	public String getFen() {
-<span class="fc" id="L40">		return fen;</span>
+<span class="fc" id="L39">		return fen;</span>
 	}
 
 	public void setFen(String fen) {
-<span class="fc" id="L44">		this.fen = fen;</span>
-<span class="fc" id="L45">		this.image = String.format(&quot;http://chessboardimage.com/%s.png&quot;,fen);</span>
-<span class="fc" id="L46">		String bestMove = null;</span>
+<span class="fc" id="L43">		this.fen = fen;</span>
+<span class="fc" id="L44">		this.image = String.format(&quot;http://chessboardimage.com/%s.png&quot;,fen);</span>
+<span class="fc" id="L45">		String bestMove = null;</span>
 		try {
-<span class="fc" id="L48">			Process engine = Runtime.getRuntime().exec(&quot;src/main/chessengine/stockfish.exe&quot;);</span>
-<span class="fc" id="L49">			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(engine.getOutputStream()));</span>
-<span class="fc" id="L50">			BufferedReader in = new BufferedReader(new InputStreamReader(engine.getInputStream()));</span>
-<span class="fc" id="L51">			out.write(&quot;isready\n&quot;);</span>
-<span class="fc" id="L52">			out.write(&quot;position fen &quot;+ fen +&quot; \ngo movetime 1\n&quot;);</span>
-<span class="fc" id="L53">			out.flush();</span>
+<span class="fc" id="L47">			Process engine = Runtime.getRuntime().exec(&quot;src/main/chessengine/stockfish.exe&quot;);</span>
+<span class="fc" id="L48">			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(engine.getOutputStream()));</span>
+<span class="fc" id="L49">			BufferedReader in = new BufferedReader(new InputStreamReader(engine.getInputStream()));</span>
+<span class="fc" id="L50">			out.write(&quot;isready\n&quot;);</span>
+<span class="fc" id="L51">			out.write(&quot;position fen &quot;+ fen +&quot; \ngo movetime 1\n&quot;);</span>
+<span class="fc" id="L52">			out.flush();</span>
 			String line;
-<span class="fc bfc" id="L55" title="All 2 branches covered.">			while((line = in.readLine()) != null) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">			while((line = in.readLine()) != null) {</span>
 				
-<span class="fc bfc" id="L57" title="All 2 branches covered.">				if (line.contains(&quot;bestmove&quot;)){</span>
-<span class="fc" id="L58">					bestMove = line.split(&quot;ponder&quot;)[0].replace(&quot;bestmove&quot;, &quot;&quot;).trim();</span>
-<span class="fc" id="L59">					engine.destroy();</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">				if (line.contains(&quot;bestmove&quot;)){</span>
+<span class="fc" id="L57">					bestMove = line.split(&quot;ponder&quot;)[0].replace(&quot;bestmove&quot;, &quot;&quot;).trim();</span>
+<span class="fc" id="L58">					engine.destroy();</span>
 				}
 			}
 			
-<span class="pc" id="L63">		} catch (IOException e) {</span>
-<span class="nc" id="L64">			e.printStackTrace();</span>
+<span class="pc" id="L62">		} catch (IOException e) {</span>
+<span class="nc" id="L63">			e.printStackTrace();</span>
 		}
-<span class="fc" id="L66">		this.bestMove = bestMove;</span>
+<span class="fc" id="L65">		this.bestMove = bestMove;</span>
 		
-<span class="fc" id="L68">	}</span>
+<span class="fc" id="L67">	}</span>
 	
-	public String getimage() {
-<span class="fc" id="L71">		return image;</span>
-	}
-	public String getBestMove() {
-<span class="fc" id="L74">		return bestMove;</span>
-	}
 	public String getYear() {
-<span class="nc" id="L77">		return year;</span>
+<span class="nc" id="L70">		return year;</span>
 	}
 
 	public void setYear(String year) {
-<span class="nc" id="L81">		this.year = year;</span>
-<span class="nc" id="L82">	}</span>
+<span class="nc" id="L74">		this.year = year;</span>
+<span class="nc" id="L75">	}</span>
 
 	public Player getWhite() {
-<span class="nc" id="L85">		return white;</span>
+<span class="nc" id="L78">		return white;</span>
 	}
 
 	public void setWhite(Player white) {
-<span class="nc" id="L89">		this.white = white;</span>
-<span class="nc" id="L90">	}</span>
+<span class="nc" id="L82">		this.white = white;</span>
+<span class="nc" id="L83">	}</span>
 
 	public Player getBlack() {
-<span class="nc" id="L93">		return black;</span>
+<span class="nc" id="L86">		return black;</span>
 	}
 
 	public void setBlack(Player black) {
-<span class="nc" id="L97">		this.black = black;</span>
-<span class="nc" id="L98">	}</span>
+<span class="nc" id="L90">		this.black = black;</span>
+<span class="nc" id="L91">	}</span>
 	
 	public String getResult() {
-<span class="fc" id="L101">		return result;</span>
+<span class="fc" id="L94">		return result;</span>
 	}
 
-	public void setBlack(String result) {
-<span class="nc" id="L105">		this.result = result;</span>
-<span class="nc" id="L106">	}</span>
+	public void setResult(String result) {
+<span class="fc" id="L98">		this.result = result;</span>
+<span class="fc" id="L99">	}</span>
+	
+	public String getimage() {
+<span class="fc" id="L102">		return image;</span>
+	}
+	public String getBestMove() {
+<span class="fc" id="L105">		return bestMove;</span>
+	}
 	
 	public void addMove(String move) {
 <span class="fc" id="L109">		Board board = new Board();</span>
@@ -121,9 +121,9 @@ public class Game {
 		}
 		
 <span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (board.isDraw()) {</span>
-<span class="nc" id="L124">			result = &quot;Draw&quot;;</span>
+<span class="nc" id="L124">			setResult(&quot;draw&quot;);</span>
 <span class="pc bfc" id="L125" title="All 2 branches covered.">		} else if (board.isMated()) {</span>
-<span class="fc" id="L126">			result = String.format(&quot;%s wins&quot;,side);</span>
+<span class="fc" id="L126">			setResult(String.format(&quot;%s wins&quot;,side.toLowerCase()));</span>
 		}
 <span class="fc" id="L128">	}</span>
 	

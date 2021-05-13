@@ -94,7 +94,7 @@ public class Game {
 		return result;
 	}
 
-	public void setBlack(String result) {
+	public void setResult(String result) {
 		this.result = result;
 	}
 	
@@ -121,9 +121,9 @@ public class Game {
 		}
 		
 		if (board.isDraw()) {
-			result = "draw";
+			setResult("draw");
 		} else if (board.isMated()) {
-			result = String.format("%s wins",side.toLowerCase());
+			setResult(String.format("%s wins",side.toLowerCase()));
 		}
 	}
 	

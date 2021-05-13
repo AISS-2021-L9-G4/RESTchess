@@ -36,7 +36,7 @@ public class GameResourceTest {
 		game.addMove("Qd7");
 		game.addMove("Qh7");
 		System.out.println(game.getimage()+"\n"+game.getResult());
-
+		
 		
 		
 	}
