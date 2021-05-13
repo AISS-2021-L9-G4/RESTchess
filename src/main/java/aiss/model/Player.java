@@ -35,11 +35,11 @@ public class Player {
 		this.name = name;
 	}
 
-	public Integer getRating() {
+	public String getRating() {
 		return rating;
 	}
 
-	public void setRating(Integer rating) {
+	public void setRating(String rating) {
 		this.rating = rating;
 	}
 }
