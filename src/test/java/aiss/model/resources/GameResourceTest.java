@@ -29,12 +29,15 @@ public class GameResourceTest {
 		Game game = new Game();
 		game.setFen("r2n1rk1/1b2qpp1/3p1P1p/p2Pp3/Pp2Q3/3B1N2/1PP3PP/R4RK1 b - - 0 19");
 		System.out.println(game.getBestMove());
-		System.out.println(game.getImage());
+		System.out.println(game.getimage());
 		Board b = new Board();
 		b.loadFromFen(game.getFen());
+		
+		game.addMove("Qd7");
+		game.addMove("Qh7");
+		System.out.println(game.getimage()+"\n"+game.getResult());
 
-		//game.putMove("e5");
-		System.out.println(game.getImage());
+		
 		
 	}
 }

@@ -1,6 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 RESTchess,aiss.model,Player,3,0,0,0,1,0,1,0,1,0
-RESTchess,aiss.model,Game,133,87,10,4,41,18,18,7,13,5
+RESTchess,aiss.model,Game,72,153,6,8,26,35,15,10,11,7
 RESTchess,aiss.model.repository,MapGameRepository,3,0,0,0,1,0,1,0,1,0
 RESTchess,aiss.api,ChessApplication,29,0,0,0,8,0,3,0,3,0
 RESTchess,aiss.api.resources,GameResource,14,0,2,0,5,0,4,0,3,0

@@ -18,7 +18,8 @@ public class Game {
 	private Player white;
 	private String result;
 	private Player black;
-	
+	private String image;
+	private String bestMove;
 	
 	public Game() {}
 	
@@ -40,8 +41,31 @@ public class Game {
 
 	public void setFen(String fen) {
 		this.fen = fen;
+		this.image = String.format("http://chessboardimage.com/%s.png",fen);
+		String bestMove = null;
+		try {
+			Process engine = Runtime.getRuntime().exec("src/main/chessengine/stockfish.exe");
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(engine.getOutputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(engine.getInputStream()));
+			out.write("isready\n");
+			out.write("position fen "+ fen +" \ngo movetime 1\n");
+			out.flush();
+			String line;
+			while((line = in.readLine()) != null) {
+				
+				if (line.contains("bestmove")){
+					bestMove = line.split("ponder")[0].replace("bestmove", "").trim();
+					engine.destroy();
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.bestMove = bestMove;
+		
 	}
-
+	
 	public String getYear() {
 		return year;
 	}
@@ -73,63 +97,42 @@ public class Game {
 	public void setBlack(String result) {
 		this.result = result;
 	}
-
+	
+	public String getimage() {
+		return image;
+	}
 	public String getBestMove() {
-		String move = null;
-		try {
-			Process engine = Runtime.getRuntime().exec("src/main/chessengine/stockfish.exe");
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(engine.getOutputStream()));
-			BufferedReader in = new BufferedReader(new InputStreamReader(engine.getInputStream()));
-			out.write("isready\n");
-			out.write("position fen "+ fen +" \ngo movetime 1\n");
-			out.flush();
-			String line;
-			while((line = in.readLine()) != null) {
-				
-				if (line.contains("bestmove")){
-					move = line.split("ponder")[0].replace("bestmove", "").trim();
-					engine.destroy();
-				}
-			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return move;
+		return bestMove;
 	}
 	
-	public String getImage() {
-		return String.format("http://chessboardimage.com/%s.png",fen);
-	}
-	
-	public void putMove(String move) {
+	public void addMove(String move) {
 		Board board = new Board();
 		board.loadFromFen(fen);
 		String side = board.getSideToMove().toString();
 		
 		MoveList moves = new MoveList(this.getFen());
-        moves.addSanMove(move, true, true);
+        moves.addSanMove(move, true, false);
         Move m = moves.removeLast();
 		if (board.legalMoves().contains(m)) {
-			board.doMove(m,true);
-			this.fen = board.getFen();
+			board.doMove(m,false);
+			setFen(board.getFen());
 		} else {
 			throw new MoveException("The input move is not a legal move for the current position");
 		}
 		
 		if (board.isDraw()) {
-			result = "Draw";
+			result = "draw";
 		} else if (board.isMated()) {
-			result = String.format("%s wins",side);
+			result = String.format("%s wins",side.toLowerCase());
 		}
 	}
 	
-	public void putPlayMove(String move) {
+	public void addPlayMove(String move) {
 		Board board = new Board();
-		putMove(move);
+		addMove(move);
 		board.loadFromFen(fen);
 		if (!(board.isDraw()||board.isMated())) {
-			putMove(getBestMove());
+			addMove(getBestMove());
 		}
 	}
 }
