@@ -3,17 +3,17 @@ package aiss.model;
 public class Player {
 	private String id;
 	private String name;
-	private Integer rating;
+	private String rating;
 	
 	public Player () {
 	}
 	
-	public Player(String name, Integer rating) {
+	public Player(String name, String rating) {
 		this.name = name;
 		this.rating = rating;
 	}
 	
-	public Player(String id, String name, Integer rating) {
+	public Player(String id, String name, String rating) {
 		this.id = id;
 		this.name = name;
 		this.rating = rating;
