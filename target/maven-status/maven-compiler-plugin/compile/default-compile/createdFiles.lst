@@ -1,0 +1,7 @@
+aiss\api\resources\GameResource.class
+aiss\api\resources\PlayerResource.class
+aiss\model\repository\MapGameRepository.class
+aiss\model\repository\GameRepository.class
+aiss\api\ChessApplication.class
+aiss\model\Game.class
+aiss\model\Player.class
