@@ -1,15 +1,13 @@
 package aiss.model;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
 
 import com.github.bhlangonijr.chesslib.Board;
+import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveException;
-import com.github.bhlangonijr.chesslib.move.MoveList;
+import com.netsensia.rivalchess.engine.search.Search;
+
 
 public class Game {
 	private String id;
@@ -42,27 +40,13 @@ public class Game {
 	public void setFen(String fen) {
 		this.fen = fen;
 		this.image = String.format("http://chessboardimage.com/%s.png",fen);
-		String bestMove = null;
-		try {
-			Process engine = Runtime.getRuntime().exec("src/main/chessengine/stockfish.exe");
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(engine.getOutputStream()));
-			BufferedReader in = new BufferedReader(new InputStreamReader(engine.getInputStream()));
-			out.write("isready\n");
-			out.write("position fen "+ fen +" \ngo movetime 1\n");
-			out.flush();
-			String line;
-			while((line = in.readLine()) != null) {
-				
-				if (line.contains("bestmove")){
-					bestMove = line.split("ponder")[0].replace("bestmove", "").trim();
-					engine.destroy();
-				}
-			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		this.bestMove = bestMove;
+		com.netsensia.rivalchess.model.Board board = com.netsensia.rivalchess.model.Board.fromFen(fen);
+		Search searcher = new Search();
+		searcher.setBoard(board);
+	    searcher.setMillisToThink(5000);
+	    searcher.setSearchDepth(5);
+	    searcher.go();
+		this.bestMove = searcher.getCurrentPath().toString().split(" ")[0];
 		
 	}
 	
@@ -110,9 +94,8 @@ public class Game {
 		board.loadFromFen(fen);
 		String side = board.getSideToMove().toString();
 		
-		MoveList moves = new MoveList(this.getFen());
-        moves.addSanMove(move, true, false);
-        Move m = moves.removeLast();
+		Move m = new Move(Square.valueOf(move.substring(0, 2).toUpperCase()), Square.valueOf(move.substring(2, 4).toUpperCase()));
+		
 		if (board.legalMoves().contains(m)) {
 			board.doMove(m,false);
 			setFen(board.getFen());

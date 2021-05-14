@@ -34,6 +34,8 @@ import aiss.model.repository.MapGameRepository;
 import org.jboss.resteasy.spi.BadRequestException;
 import org.jboss.resteasy.spi.NotFoundException;
 
+import com.github.bhlangonijr.chesslib.move.MoveException;
+
 
 @Path("/games")
 public class GameResource {
@@ -161,7 +163,7 @@ public class GameResource {
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
 		URI uri = ub.build(game.getId());
 		ResponseBuilder resp = Response.created(uri);
-		resp.entity(game);			
+		resp.entity(game);
 		return resp.build();
 	}
 
@@ -214,7 +216,11 @@ public class GameResource {
 		if (game==null)
 			throw new NotFoundException("The game with id=" + gameId + " was not found");
 			
-		repository.addMove(gameId, move);
+		try {
+			repository.addMove(gameId, move);
+		} catch (MoveException e) {
+			throw new BadRequestException("Ilegal Move for the current position");
+		}
 		// Builds the response
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
 		URI uri = ub.build(gameId);
@@ -232,8 +238,12 @@ public class GameResource {
 		
 		if (game==null)
 			throw new NotFoundException("The game with id=" + gameId + " was not found");
-			
-		repository.addPlayMove(gameId, move);
+		try {
+			repository.addPlayMove(gameId, move);
+		} catch (MoveException e) {
+			throw new BadRequestException(String.format("Ilegal Move for the current position. fen: %s; Image: %s",game.getFen(),game.getimage()));
+		}
+		
 		// Builds the response
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
 		URI uri = ub.build(gameId);

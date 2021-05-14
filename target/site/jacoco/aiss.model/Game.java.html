@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RESTchess</a> &gt; <a href="index.source.html" class="el_package">aiss.model</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package aiss.model;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
 
 import com.github.bhlangonijr.chesslib.Board;
+import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveException;
-import com.github.bhlangonijr.chesslib.move.MoveList;
+import com.netsensia.rivalchess.engine.search.Search;
+
 
 public class Game {
 	private String id;
@@ -21,119 +19,104 @@ public class Game {
 	private String image;
 	private String bestMove;
 	
-<span class="fc" id="L24">	public Game() {}</span>
+<span class="fc" id="L22">	public Game() {}</span>
 	
-<span class="nc" id="L26">	public Game(String fen) {</span>
-<span class="nc" id="L27">		this.fen = fen;</span>
-<span class="nc" id="L28">	}</span>
+<span class="nc" id="L24">	public Game(String fen) {</span>
+<span class="nc" id="L25">		this.fen = fen;</span>
+<span class="nc" id="L26">	}</span>
 	
 	public String getId() {
-<span class="nc" id="L31">		return id;</span>
+<span class="nc" id="L29">		return id;</span>
 	}
 
 	public void setId(String id) {
-<span class="nc" id="L35">		this.id = id;</span>
-<span class="nc" id="L36">	}</span>
+<span class="nc" id="L33">		this.id = id;</span>
+<span class="nc" id="L34">	}</span>
 
 	public String getFen() {
-<span class="fc" id="L39">		return fen;</span>
+<span class="nc" id="L37">		return fen;</span>
 	}
 
 	public void setFen(String fen) {
-<span class="fc" id="L43">		this.fen = fen;</span>
-<span class="fc" id="L44">		this.image = String.format(&quot;http://chessboardimage.com/%s.png&quot;,fen);</span>
-<span class="fc" id="L45">		String bestMove = null;</span>
-		try {
-<span class="fc" id="L47">			Process engine = Runtime.getRuntime().exec(&quot;src/main/chessengine/stockfish.exe&quot;);</span>
-<span class="fc" id="L48">			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(engine.getOutputStream()));</span>
-<span class="fc" id="L49">			BufferedReader in = new BufferedReader(new InputStreamReader(engine.getInputStream()));</span>
-<span class="fc" id="L50">			out.write(&quot;isready\n&quot;);</span>
-<span class="fc" id="L51">			out.write(&quot;position fen &quot;+ fen +&quot; \ngo movetime 1\n&quot;);</span>
-<span class="fc" id="L52">			out.flush();</span>
-			String line;
-<span class="fc bfc" id="L54" title="All 2 branches covered.">			while((line = in.readLine()) != null) {</span>
-				
-<span class="fc bfc" id="L56" title="All 2 branches covered.">				if (line.contains(&quot;bestmove&quot;)){</span>
-<span class="fc" id="L57">					bestMove = line.split(&quot;ponder&quot;)[0].replace(&quot;bestmove&quot;, &quot;&quot;).trim();</span>
-<span class="fc" id="L58">					engine.destroy();</span>
-				}
-			}
-			
-<span class="pc" id="L62">		} catch (IOException e) {</span>
-<span class="nc" id="L63">			e.printStackTrace();</span>
-		}
-<span class="fc" id="L65">		this.bestMove = bestMove;</span>
+<span class="fc" id="L41">		this.fen = fen;</span>
+<span class="fc" id="L42">		this.image = String.format(&quot;http://chessboardimage.com/%s.png&quot;,fen);</span>
+<span class="fc" id="L43">		com.netsensia.rivalchess.model.Board board = com.netsensia.rivalchess.model.Board.fromFen(fen);</span>
+<span class="fc" id="L44">		Search searcher = new Search();</span>
+<span class="fc" id="L45">		searcher.setBoard(board);</span>
+<span class="fc" id="L46">	    searcher.setMillisToThink(5000);</span>
+<span class="fc" id="L47">	    searcher.setSearchDepth(5);</span>
+<span class="fc" id="L48">	    searcher.go();</span>
+<span class="fc" id="L49">		this.bestMove = searcher.getCurrentPath().toString().split(&quot; &quot;)[0];</span>
 		
-<span class="fc" id="L67">	}</span>
+<span class="fc" id="L51">	}</span>
 	
 	public String getYear() {
-<span class="nc" id="L70">		return year;</span>
+<span class="nc" id="L54">		return year;</span>
 	}
 
 	public void setYear(String year) {
-<span class="nc" id="L74">		this.year = year;</span>
-<span class="nc" id="L75">	}</span>
+<span class="nc" id="L58">		this.year = year;</span>
+<span class="nc" id="L59">	}</span>
 
 	public Player getWhite() {
-<span class="nc" id="L78">		return white;</span>
+<span class="nc" id="L62">		return white;</span>
 	}
 
 	public void setWhite(Player white) {
-<span class="nc" id="L82">		this.white = white;</span>
-<span class="nc" id="L83">	}</span>
+<span class="nc" id="L66">		this.white = white;</span>
+<span class="nc" id="L67">	}</span>
 
 	public Player getBlack() {
-<span class="nc" id="L86">		return black;</span>
+<span class="nc" id="L70">		return black;</span>
 	}
 
 	public void setBlack(Player black) {
-<span class="nc" id="L90">		this.black = black;</span>
-<span class="nc" id="L91">	}</span>
+<span class="nc" id="L74">		this.black = black;</span>
+<span class="nc" id="L75">	}</span>
 	
 	public String getResult() {
-<span class="fc" id="L94">		return result;</span>
+<span class="nc" id="L78">		return result;</span>
 	}
 
 	public void setResult(String result) {
-<span class="fc" id="L98">		this.result = result;</span>
-<span class="fc" id="L99">	}</span>
+<span class="nc" id="L82">		this.result = result;</span>
+<span class="nc" id="L83">	}</span>
 	
 	public String getimage() {
-<span class="fc" id="L102">		return image;</span>
+<span class="nc" id="L86">		return image;</span>
 	}
 	public String getBestMove() {
-<span class="fc" id="L105">		return bestMove;</span>
+<span class="nc" id="L89">		return bestMove;</span>
 	}
 	
 	public void addMove(String move) {
-<span class="fc" id="L109">		Board board = new Board();</span>
-<span class="fc" id="L110">		board.loadFromFen(fen);</span>
-<span class="fc" id="L111">		String side = board.getSideToMove().toString();</span>
+<span class="nc" id="L93">		Board board = new Board();</span>
+<span class="nc" id="L94">		board.loadFromFen(fen);</span>
+<span class="nc" id="L95">		String side = board.getSideToMove().toString();</span>
 		
-<span class="fc" id="L113">		MoveList moves = new MoveList(this.getFen());</span>
-<span class="fc" id="L114">        moves.addSanMove(move, true, false);</span>
-<span class="fc" id="L115">        Move m = moves.removeLast();</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (board.legalMoves().contains(m)) {</span>
-<span class="fc" id="L117">			board.doMove(m,false);</span>
-<span class="fc" id="L118">			setFen(board.getFen());</span>
-<span class="fc" id="L119">		} else {</span>
-<span class="nc" id="L120">			throw new MoveException(&quot;The input move is not a legal move for the current position&quot;);</span>
+<span class="nc" id="L97">		Move m = new Move(Square.valueOf(move.substring(0, 2).toUpperCase()), Square.valueOf(move.substring(2, 4).toUpperCase()));</span>
+		
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (board.legalMoves().contains(m)) {</span>
+<span class="nc" id="L100">			board.doMove(m,false);</span>
+<span class="nc" id="L101">			setFen(board.getFen());</span>
+<span class="nc" id="L102">		} else {</span>
+<span class="nc" id="L103">			throw new MoveException(&quot;The input move is not a legal move for the current position&quot;);</span>
 		}
 		
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (board.isDraw()) {</span>
-<span class="nc" id="L124">			setResult(&quot;draw&quot;);</span>
-<span class="pc bfc" id="L125" title="All 2 branches covered.">		} else if (board.isMated()) {</span>
-<span class="fc" id="L126">			setResult(String.format(&quot;%s wins&quot;,side.toLowerCase()));</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (board.isDraw()) {</span>
+<span class="nc" id="L107">			setResult(&quot;draw&quot;);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		} else if (board.isMated()) {</span>
+<span class="nc" id="L109">			setResult(String.format(&quot;%s wins&quot;,side.toLowerCase()));</span>
 		}
-<span class="fc" id="L128">	}</span>
+<span class="nc" id="L111">	}</span>
 	
 	public void addPlayMove(String move) {
-<span class="fc" id="L131">		Board board = new Board();</span>
-<span class="fc" id="L132">		addMove(move);</span>
-<span class="fc" id="L133">		board.loadFromFen(fen);</span>
-<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (!(board.isDraw()||board.isMated())) {</span>
-<span class="fc" id="L135">			addMove(getBestMove());</span>
+<span class="nc" id="L114">		Board board = new Board();</span>
+<span class="nc" id="L115">		addMove(move);</span>
+<span class="nc" id="L116">		board.loadFromFen(fen);</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (!(board.isDraw()||board.isMated())) {</span>
+<span class="nc" id="L118">			addMove(getBestMove());</span>
 		}
-<span class="fc" id="L137">	}</span>
+<span class="nc" id="L120">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
