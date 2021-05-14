@@ -128,12 +128,12 @@ public class Game {
 <span class="fc" id="L128">	}</span>
 	
 	public void addPlayMove(String move) {
-<span class="nc" id="L131">		Board board = new Board();</span>
-<span class="nc" id="L132">		addMove(move);</span>
-<span class="nc" id="L133">		board.loadFromFen(fen);</span>
-<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (!(board.isDraw()||board.isMated())) {</span>
-<span class="nc" id="L135">			addMove(getBestMove());</span>
+<span class="fc" id="L131">		Board board = new Board();</span>
+<span class="fc" id="L132">		addMove(move);</span>
+<span class="fc" id="L133">		board.loadFromFen(fen);</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (!(board.isDraw()||board.isMated())) {</span>
+<span class="fc" id="L135">			addMove(getBestMove());</span>
 		}
-<span class="nc" id="L137">	}</span>
+<span class="fc" id="L137">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

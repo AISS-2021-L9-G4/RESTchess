@@ -1,28 +1,188 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RESTchess</a> &gt; <a href="index.source.html" class="el_package">aiss.api.resources</a> &gt; <span class="el_source">PlayerResource.java</span></div><h1>PlayerResource.java</h1><pre class="source lang-java linenums">package aiss.api.resources;
 
-import javax.ws.rs.Path;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+
+import org.jboss.resteasy.spi.BadRequestException;
+import org.jboss.resteasy.spi.NotFoundException;
+
+import aiss.api.resources.comparators.ComparatorNamePlayer;
+import aiss.api.resources.comparators.ComparatorNamePlayerReversed;
+import aiss.api.resources.comparators.ComparatorRatingPlayer;
+import aiss.api.resources.comparators.ComparatorRatingPlayerReversed;
+import aiss.model.Player;
 import aiss.model.repository.GameRepository;
 import aiss.model.repository.MapGameRepository;
 
 @Path(&quot;/players&quot;)
-<span class="nc" id="L9">public class PlayerResource {</span>
+public class PlayerResource {
 		
 	/* Singleton */
-<span class="nc" id="L12">	private static PlayerResource _instance=null;</span>
+<span class="nc" id="L39">	private static PlayerResource _instance=null;</span>
 	GameRepository repository;
 	
-//	private PlayerResource() {
-//		repository=MapGameRepository.getInstance();
-//
-//	}
+<span class="nc" id="L42">	private PlayerResource() {</span>
+<span class="nc" id="L43">		repository=MapGameRepository.getInstance();</span>
+
+<span class="nc" id="L45">	}</span>
 	
 	public static PlayerResource getInstance()
 	{
-<span class="nc bnc" id="L22" title="All 2 branches missed.">		if(_instance==null)</span>
-<span class="nc" id="L23">				_instance=new PlayerResource();</span>
-<span class="nc" id="L24">		return _instance;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">		if(_instance==null)</span>
+<span class="nc" id="L50">				_instance=new PlayerResource();</span>
+<span class="nc" id="L51">		return _instance;</span>
 	}
+	
+	@GET
+	@Produces(&quot;application/json&quot;)
+	public Collection&lt;Player&gt; getAllPlayers(@QueryParam(&quot;order&quot;) String order, 
+			@QueryParam(&quot;name&quot;) String name, @QueryParam(&quot;rating&quot;) String rating,
+			@QueryParam(&quot;offset&quot;) Integer offset, @QueryParam(&quot;limit&quot;) Integer limit)
+	{
+<span class="nc" id="L60">		List&lt;Player&gt; result = new ArrayList&lt;Player&gt;();</span>
+		
+		// Filter
+<span class="nc bnc" id="L63" title="All 2 branches missed.">		for(Player player : repository.getAllPlayers()) {</span>
+<span class="nc bnc" id="L64" title="All 4 branches missed.">			if(name == null || name.equals(player.getName())) { 			// Name filter</span>
+<span class="nc bnc" id="L65" title="All 4 branches missed.">				if(rating == null || rating.equals(player.getRating())) {	// Rating filter</span>
+<span class="nc" id="L66">					result.add(player);</span>
+				}
+			}
+		}
+		
+		// Order
+<span class="nc bnc" id="L72" title="All 2 branches missed.">		if(order != null) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">			if(order.equals(&quot;name&quot;))</span>
+<span class="nc" id="L74">				Collections.sort(result, new ComparatorNamePlayer());</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">			else if(order.equals(&quot;-name&quot;))</span>
+<span class="nc" id="L76">				Collections.sort(result, new ComparatorNamePlayerReversed());</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">			else if(order.equals(&quot;rating&quot;))</span>
+<span class="nc" id="L78">				Collections.sort(result, new ComparatorRatingPlayer());</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">			else if(order.equals(&quot;-rating&quot;))</span>
+<span class="nc" id="L80">				Collections.sort(result, new ComparatorRatingPlayerReversed());</span>
+			else 
+<span class="nc" id="L82">				throw new BadRequestException(&quot;The order parameter must be 'name', '-name', 'rating' or '-rating'&quot;);	</span>
+		}
+		
+		// Pagination
+<span class="nc" id="L86">		int size = repository.getAllPlayers().size();</span>
+<span class="nc" id="L87">		List&lt;Player&gt; resultPagination = new ArrayList&lt;Player&gt;();</span>
+		
+<span class="nc bnc" id="L89" title="All 6 branches missed.">		if(offset != null &amp;&amp; offset &gt; 0 &amp;&amp; offset &lt; size) {</span>
+<span class="nc bnc" id="L90" title="All 6 branches missed.">			if (limit != null &amp;&amp; limit &gt; 0 &amp;&amp; (offset + limit) &lt;= size) {</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">				for(int i = offset; i &lt; (offset + limit); i++) {</span>
+<span class="nc" id="L92">					resultPagination.add(result.get(i));</span>
+				}
+<span class="nc bnc" id="L94" title="All 4 branches missed.">			} else if(limit == null || (offset + limit) &gt; size) {</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">				for(int i = offset; i &lt; size; i++) {</span>
+<span class="nc" id="L96">					resultPagination.add(result.get(i));</span>
+				}
+<span class="nc" id="L98">			} else {</span>
+<span class="nc" id="L99">				throw new BadRequestException(&quot;The limit parameter must be greater than 0 and lower than &quot; + result.size() + &quot;.&quot;);</span>
+			}
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		} else if(offset == null) {</span>
+<span class="nc bnc" id="L102" title="All 4 branches missed.">			if(limit != null &amp;&amp; limit &lt; size) {</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">				for(int i = 0; i &lt; limit; i++) {</span>
+<span class="nc" id="L104">					resultPagination.add(result.get(i));</span>
+				}
+<span class="nc" id="L106">			} else {</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">				for(Player player : result) {</span>
+<span class="nc" id="L108">					resultPagination.add(player);</span>
+				}
+			}
+<span class="nc" id="L111">		} else {</span>
+<span class="nc" id="L112">			throw new BadRequestException(&quot;The offset parameter must be greater than 0 and lower than &quot; + result.size() + &quot;.&quot;);</span>
+		}
+		
+<span class="nc bnc" id="L115" title="All 4 branches missed.">		if(offset != null || limit != null) {</span>
+<span class="nc" id="L116">			return resultPagination;</span>
+		} else {
+<span class="nc" id="L118">			return result;</span>
+		}
+	}
+	
+	@GET
+	@Path(&quot;/{id}&quot;)
+	@Produces(&quot;application/json&quot;)
+	public Player get(@PathParam(&quot;id&quot;) String playerId)
+	{
+<span class="nc" id="L127">		Player player = repository.getPlayer(playerId);</span>
+		
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if(player == null) {</span>
+<span class="nc" id="L130">			throw new NotFoundException(&quot;The player with id=&quot;+ playerId +&quot; was not found&quot;);</span>
+		}
+		
+<span class="nc" id="L133">		return player;</span>
+	}
+	
+	@POST
+	@Consumes(&quot;application/json&quot;)
+	@Produces(&quot;application/json&quot;)
+	public Response addPlayer(@Context UriInfo uriInfo, Player player) {
+<span class="nc bnc" id="L140" title="All 4 branches missed.">		if(player.getName() == null || &quot;&quot;.equals(player.getName())) </span>
+<span class="nc" id="L141">			throw new BadRequestException(&quot;The name of the player must not be null&quot;);</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">		if(player.getRating() == null || &quot;&quot;.equals(player.getRating()))</span>
+<span class="nc" id="L143">			throw new BadRequestException(&quot;The rating of the player must not be null&quot;);</span>
+		
+<span class="nc" id="L145">		repository.addPlayer(player);</span>
+		
+		// Builds the response. Returns the playlist the has just been added.
+<span class="nc" id="L148">		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), &quot;get&quot;);</span>
+<span class="nc" id="L149">		URI uri = ub.build(player.getId());</span>
+<span class="nc" id="L150">		ResponseBuilder resp = Response.created(uri);</span>
+<span class="nc" id="L151">		resp.entity(player);			</span>
+<span class="nc" id="L152">		return resp.build();</span>
+	}
+	
+	@PUT
+	@Consumes(&quot;application/json&quot;)
+	public Response updatePlayer(Player player) {
+<span class="nc" id="L158">		Player oldPlayer = repository.getPlayer(player.getId());</span>
+		
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (oldPlayer == null) </span>
+<span class="nc" id="L161">			throw new NotFoundException(&quot;The player with id=&quot;+ player.getId() +&quot; was not found&quot;);			</span>
+		
+		// Update name
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		if (player.getName() != null)</span>
+<span class="nc" id="L165">			oldPlayer.setName(player.getName());</span>
+		// Update rating
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if(player.getRating() != null)</span>
+<span class="nc" id="L168">			oldPlayer.setRating(player.getRating());</span>
+		
+<span class="nc" id="L170">		return Response.noContent().build();</span>
+	}
+	
+	@DELETE
+	@Path(&quot;/{id}&quot;)
+	public Response removePlayer(@PathParam(&quot;id&quot;) String playerId) {
+<span class="nc" id="L176">		Player player = repository.getPlayer(playerId);</span>
+		
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if(player == null)</span>
+<span class="nc" id="L179">			throw new NotFoundException(&quot;The player with id=&quot; + playerId + &quot; was not found&quot;);</span>
+		else 
+<span class="nc" id="L181">			repository.removePlayer(playerId);</span>
+		
+<span class="nc" id="L183">		return Response.noContent().build();</span>
+	}
+	
 		
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

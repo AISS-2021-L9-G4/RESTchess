@@ -89,7 +89,7 @@ public class GameResource {
 			else if(order.equals("-result"))
 				Collections.sort(res, new ComparatorResultGameReversed());
 			else 
-				throw new BadRequestException("The order parameter must be 'fen', '-fen', 'year', '-year', 'result' or '-result'");	
+				throw new BadRequestException("The order parameter must be 'rating', '-rating', 'year', '-year', 'result' or '-result'");	
 		}
 		
 		// Pagination
@@ -168,7 +168,7 @@ public class GameResource {
 	
 	@PUT
 	@Consumes("application/json")
-	public Response updatePlaylist(Game game) {
+	public Response updateGame(Game game) {
 		Game oldgame = repository.getGame(game.getId());
 		if (oldgame == null) {
 			throw new NotFoundException("The game with id="+ game.getId() +" was not found");			
@@ -202,5 +202,43 @@ public class GameResource {
 		
 		return Response.noContent().build();
 	}
+	
+	@POST	
+	@Path("/{gameId}/{move}")
+	@Produces("application/json")
+	public Response addMove(@Context UriInfo uriInfo,@PathParam("gameId") String gameId, @PathParam("move") String move)
+	{				
 		
+		Game game = repository.getGame(gameId);
+		
+		if (game==null)
+			throw new NotFoundException("The game with id=" + gameId + " was not found");
+			
+		repository.addMove(gameId, move);
+		// Builds the response
+		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
+		URI uri = ub.build(gameId);
+		ResponseBuilder resp = Response.created(uri);
+		resp.entity(game);			
+		return resp.build();
+	}
+	@POST	
+	@Path("/play/{gameId}/{move}")
+	@Produces("application/json")
+	public Response addPlayMove(@Context UriInfo uriInfo,@PathParam("gameId") String gameId, @PathParam("move") String move)
+	{				
+		
+		Game game = repository.getGame(gameId);
+		
+		if (game==null)
+			throw new NotFoundException("The game with id=" + gameId + " was not found");
+			
+		repository.addPlayMove(gameId, move);
+		// Builds the response
+		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
+		URI uri = ub.build(gameId);
+		ResponseBuilder resp = Response.created(uri);
+		resp.entity(game);			
+		return resp.build();
+	}
 }

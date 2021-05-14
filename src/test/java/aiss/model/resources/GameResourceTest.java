@@ -37,6 +37,10 @@ public class GameResourceTest {
 		game.addMove("Qh7");
 		System.out.println(game.getimage()+"\n"+game.getResult());
 		
+		game = new Game();
+		game.setFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+		game.addPlayMove("e4");
+		System.out.println(game.getimage());
 		
 		
 	}
