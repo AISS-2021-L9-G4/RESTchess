@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="maven-antrun-" default="main">
   <target name="main">
-    <property name="target.webapp.dir" value="E:\Universidad\Curso_2\Cuatrimestre_2\AISS\Proyecto\Integración\RESTchess\target/RESTchess-0.0.1-SNAPSHOT" />
-    <property name="src.webapp.dir" value="E:\Universidad\Curso_2\Cuatrimestre_2\AISS\Proyecto\Integración\RESTchess/src/main/webapp" />
+    <property name="target.webapp.dir" value="C:\Users\mEh\eclipseEnterprise-workspace\RESTchess\target/RESTchess-0.0.1-SNAPSHOT" />
+    <property name="src.webapp.dir" value="C:\Users\mEh\eclipseEnterprise-workspace\RESTchess/src/main/webapp" />
     <sync todir="${target.webapp.dir}" includeEmptyDirs="true" verbose="true">
       <fileset dir="${src.webapp.dir}" />
       <preserveintarget>

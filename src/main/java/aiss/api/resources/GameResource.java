@@ -22,8 +22,8 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import aiss.api.resources.comparators.ComparatorFenGame;
-import aiss.api.resources.comparators.ComparatorFenGameReversed;
+import aiss.api.resources.comparators.ComparatorRatingGame;
+import aiss.api.resources.comparators.ComparatorRatingGameReversed;
 import aiss.api.resources.comparators.ComparatorResultGame;
 import aiss.api.resources.comparators.ComparatorResultGameReversed;
 import aiss.api.resources.comparators.ComparatorYearGame;
@@ -43,15 +43,10 @@ public class GameResource {
 	GameRepository repository;
 	
 
-//	private GameResource() {
-//		repository=MapGameRepository.getInstance();
-//
-//	}
+	private GameResource() {
+		repository=MapGameRepository.getInstance();
 
-//	private GameResource() {
-//		repository=MapGameRepository.getInstance();
-//
-//	}
+	}
 	
 	public static GameResource getInstance()
 	{
@@ -81,10 +76,10 @@ public class GameResource {
 		
 		// Order
 		if(order != null) {
-			if(order.equals("fen"))
-				Collections.sort(res, new ComparatorFenGame());
-			else if(order.equals("-fen"))
-				Collections.sort(res, new ComparatorFenGameReversed());
+			if(order.equals("rating"))
+				Collections.sort(res, new ComparatorRatingGame());
+			else if(order.equals("-rating"))
+				Collections.sort(res, new ComparatorRatingGameReversed());
 			else if(order.equals("year"))
 				Collections.sort(res, new ComparatorYearGame());
 			else if(order.equals("-year"))
@@ -162,7 +157,7 @@ public class GameResource {
 
 		repository.addGame(game);
 
-		// Builds the response. Returns the playlist that has just been added.
+		// Builds the response. Returns the game that has just been added.
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
 		URI uri = ub.build(game.getId());
 		ResponseBuilder resp = Response.created(uri);

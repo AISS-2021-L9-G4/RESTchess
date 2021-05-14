@@ -30,6 +30,7 @@ import aiss.api.resources.comparators.ComparatorRatingPlayer;
 import aiss.api.resources.comparators.ComparatorRatingPlayerReversed;
 import aiss.model.Player;
 import aiss.model.repository.GameRepository;
+import aiss.model.repository.MapGameRepository;
 
 @Path("/players")
 public class PlayerResource {
@@ -38,10 +39,10 @@ public class PlayerResource {
 	private static PlayerResource _instance=null;
 	GameRepository repository;
 	
-//	private PlayerResource() {
-//		repository=MapGameRepository.getInstance();
-//
-//	}
+	private PlayerResource() {
+		repository=MapGameRepository.getInstance();
+
+	}
 	
 	public static PlayerResource getInstance()
 	{
