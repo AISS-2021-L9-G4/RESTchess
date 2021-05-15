@@ -178,7 +178,7 @@ public class PlayerResource {
 		if(player == null)
 			throw new NotFoundException("The player with id=" + playerId + " was not found");
 		else 
-			repository.removePlayer(playerId);
+			repository.deletePlayer(playerId);
 		
 		return Response.noContent().build();
 	}

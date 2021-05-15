@@ -29,6 +29,7 @@ import aiss.api.resources.comparators.ComparatorResultGameReversed;
 import aiss.api.resources.comparators.ComparatorYearGame;
 import aiss.api.resources.comparators.ComparatorYearGameReversed;
 import aiss.model.Game;
+import aiss.model.Results;
 import aiss.model.repository.GameRepository;
 import aiss.model.repository.MapGameRepository;
 import org.jboss.resteasy.spi.BadRequestException;
@@ -60,7 +61,7 @@ public class GameResource {
 	@Produces("application/json")
 	public Collection<Game> getAllGames(@QueryParam("order") String order, 
 			@QueryParam("fen") String fen, @QueryParam("year") String year,
-			@QueryParam("result") String result, @QueryParam("offset") Integer offset, 
+			@QueryParam("result") Results result, @QueryParam("offset") Integer offset, 
 			@QueryParam("limit") Integer limit)
 	{
 		List<Game> res = new ArrayList<Game>();
@@ -69,7 +70,7 @@ public class GameResource {
 		for(Game game : repository.getAllGames()) {
 			if(fen == null || fen.equals(game.getFen())) { 			// Fen filter
 				if(year == null || year.equals(game.getYear())) {	// Year filter
-					if(result == null || result.equals(game.getResult())) {	// Result filter
+					if(result == null || result.equals(game.getResult())) {	// Result enumerated filter
 						res.add(game);
 					}
 				}
@@ -151,12 +152,7 @@ public class GameResource {
 	@Produces("application/json")
 	public Response addGame(@Context UriInfo uriInfo, Game game) {
 		if (game.getFen() == null || "".equals(game.getFen()))
-			throw new BadRequestException("The name of the fen must not be null");
-		if (game.getYear() == null || "".equals(game.getYear()))
-			throw new BadRequestException("The year must not be null");
-		if (game.getResult() == null || "".equals(game.getResult()))
-			throw new BadRequestException("The result must not be null");
-
+			throw new BadRequestException("The fen must not be null");
 		repository.addGame(game);
 
 		// Builds the response. Returns the game that has just been added.
@@ -186,8 +182,14 @@ public class GameResource {
 		
 		// Update result
 		if (game.getResult() !=null)
-			oldgame.setYear(game.getResult());
+			oldgame.setResult(game.getResult());
 		
+		//Update Players
+		if (game.getWhite() !=null)
+			oldgame.setWhite(game.getWhite());
+		
+		if (game.getBlack() !=null)
+			oldgame.setBlack(game.getBlack());
 		return Response.noContent().build();
 	}
 	
@@ -200,7 +202,7 @@ public class GameResource {
 		if (game==null)
 			throw new NotFoundException("The game with id=" + gameId + " was not found");
 		
-		repository.removeGame(gameId);	
+		repository.deleteGame(gameId);	
 		
 		return Response.noContent().build();
 	}
@@ -219,7 +221,7 @@ public class GameResource {
 		try {
 			repository.addMove(gameId, move);
 		} catch (MoveException e) {
-			throw new BadRequestException("Ilegal Move for the current position");
+			throw new BadRequestException(String.format("Ilegal Move for the current position. fen: %s; Image: %s",game.getFen(),game.getimage()));
 		}
 		// Builds the response
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");

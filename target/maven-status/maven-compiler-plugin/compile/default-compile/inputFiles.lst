@@ -8,6 +8,7 @@ C:\Users\mEh\eclipseEnterprise-workspace\RESTchess\src\main\java\aiss\model\Game
 C:\Users\mEh\eclipseEnterprise-workspace\RESTchess\src\main\java\aiss\api\resources\comparators\ComparatorRatingGame.java
 C:\Users\mEh\eclipseEnterprise-workspace\RESTchess\src\main\java\aiss\api\resources\comparators\ComparatorRatingGameReversed.java
 C:\Users\mEh\eclipseEnterprise-workspace\RESTchess\src\main\java\aiss\api\resources\PlayerResource.java
+C:\Users\mEh\eclipseEnterprise-workspace\RESTchess\src\main\java\aiss\model\Results.java
 C:\Users\mEh\eclipseEnterprise-workspace\RESTchess\src\main\java\aiss\model\repository\MapGameRepository.java
 C:\Users\mEh\eclipseEnterprise-workspace\RESTchess\src\main\java\aiss\api\resources\comparators\ComparatorResultGame.java
 C:\Users\mEh\eclipseEnterprise-workspace\RESTchess\src\main\java\aiss\api\resources\comparators\ComparatorRatingPlayerReversed.java

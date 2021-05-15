@@ -6,150 +6,154 @@ import java.util.Map;
 
 import aiss.model.Game;
 import aiss.model.Player;
+import aiss.model.Results;
 
-<span class="nc" id="L10">public class MapGameRepository implements GameRepository {</span>
+<span class="nc" id="L11">public class MapGameRepository implements GameRepository {</span>
 	Map&lt;String, Game&gt; gameMap;
 	Map&lt;String, Player&gt; playerMap;
-<span class="nc" id="L13">	private static MapGameRepository instance=null;</span>
-<span class="nc" id="L14">	private int index=0;</span>
+<span class="nc" id="L14">	private static MapGameRepository instance=null;</span>
+<span class="nc" id="L15">	private int index=0;</span>
 	
 	public static MapGameRepository getInstance() {
 		
-<span class="nc bnc" id="L18" title="All 2 branches missed.">		if (instance==null) {</span>
-<span class="nc" id="L19">			instance = new MapGameRepository();</span>
-<span class="nc" id="L20">			instance.init();</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">		if (instance==null) {</span>
+<span class="nc" id="L20">			instance = new MapGameRepository();</span>
+<span class="nc" id="L21">			instance.init();</span>
 		}
 		
-<span class="nc" id="L23">		return instance;</span>
+<span class="nc" id="L24">		return instance;</span>
 	}
 	
 	public void init() {
 		
-<span class="nc" id="L28">		gameMap = new HashMap&lt;String,Game&gt;();</span>
-<span class="nc" id="L29">		playerMap = new HashMap&lt;String,Player&gt;();</span>
+<span class="nc" id="L29">		gameMap = new HashMap&lt;String,Game&gt;();</span>
+<span class="nc" id="L30">		playerMap = new HashMap&lt;String,Player&gt;();</span>
 		
 		// Create Players
-<span class="nc" id="L32">		Player player1=new Player(&quot;Viswanathan Anand&quot;,&quot;2772&quot;);</span>
-<span class="nc" id="L33">		addPlayer(player1);</span>
+<span class="nc" id="L33">		Player player1=new Player(&quot;Viswanathan Anand&quot;,&quot;2772&quot;);</span>
+<span class="nc" id="L34">		addPlayer(player1);</span>
 		
-<span class="nc" id="L35">		Player player2=new Player(&quot;Levon Aronian&quot;,&quot;2802&quot;);</span>
-<span class="nc" id="L36">		addPlayer(player2);</span>
+<span class="nc" id="L36">		Player player2=new Player(&quot;Levon Aronian&quot;,&quot;2802&quot;);</span>
+<span class="nc" id="L37">		addPlayer(player2);</span>
 		
-<span class="nc" id="L38">		Player player3=new Player(&quot;Paul Morphy&quot;,&quot;2690&quot;);</span>
-<span class="nc" id="L39">		addPlayer(player3);</span>
+<span class="nc" id="L39">		Player player3=new Player(&quot;Paul Morphy&quot;,&quot;2690&quot;);</span>
+<span class="nc" id="L40">		addPlayer(player3);</span>
 		
-<span class="nc" id="L41">		Player player4=new Player(&quot;Johan Lowenthal&quot;,&quot;2510&quot;);</span>
-<span class="nc" id="L42">		addPlayer(player4);</span>
+<span class="nc" id="L42">		Player player4=new Player(&quot;Johan Lowenthal&quot;,&quot;2510&quot;);</span>
+<span class="nc" id="L43">		addPlayer(player4);</span>
 		
-<span class="nc" id="L44">		Player player5=new Player(&quot;Stockfish&quot;,&quot;3549&quot;);</span>
-<span class="nc" id="L45">		addPlayer(player5);</span>
+<span class="nc" id="L45">		Player player5=new Player(&quot;Stockfish&quot;,&quot;3549&quot;);</span>
+<span class="nc" id="L46">		addPlayer(player5);</span>
 		
-<span class="nc" id="L47">		Player player6=new Player(&quot;Player&quot;,&quot;1500&quot;);</span>
-<span class="nc" id="L48">		addPlayer(player6);</span>
+<span class="nc" id="L48">		Player player6=new Player(&quot;Player&quot;,&quot;1500&quot;);</span>
+<span class="nc" id="L49">		addPlayer(player6);</span>
 		
 		// Create Games
-<span class="nc" id="L51">		Game game1=new Game();</span>
-<span class="nc" id="L52">		game1.setFen(&quot;2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24&quot;);</span>
-<span class="nc" id="L53">		game1.setResult(&quot;black wins&quot;);</span>
-<span class="nc" id="L54">		game1.setWhite(player2);</span>
-<span class="nc" id="L55">		game1.setBlack(player1);</span>
-<span class="nc" id="L56">		game1.setYear(&quot;2013&quot;);</span>
-<span class="nc" id="L57">		addGame(game1);</span>
+<span class="nc" id="L52">		Game game1=new Game();</span>
+<span class="nc" id="L53">		game1.setFen(&quot;2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24&quot;);</span>
+<span class="nc" id="L54">		game1.setResult(Results.black_wins);</span>
+<span class="nc" id="L55">		game1.setWhite(player2);</span>
+<span class="nc" id="L56">		game1.setBlack(player1);</span>
+<span class="nc" id="L57">		game1.setYear(&quot;2013&quot;);</span>
+<span class="nc" id="L58">		addGame(game1);</span>
 		
-<span class="nc" id="L59">		Game game2=new Game();</span>
-<span class="nc" id="L60">		game2.setFen(&quot;8/5pk1/8/4q1pp/8/2Q4P/1P3PP1/6K1 b - - 1 38&quot;);</span>
-<span class="nc" id="L61">		game2.setResult(&quot;black wins&quot;);</span>
-<span class="nc" id="L62">		game2.setWhite(player4);</span>
-<span class="nc" id="L63">		game2.setBlack(player3);</span>
-<span class="nc" id="L64">		game2.setYear(&quot;1859&quot;);</span>
-<span class="nc" id="L65">		addGame(game2);</span>
+<span class="nc" id="L60">		Game game2=new Game();</span>
+<span class="nc" id="L61">		game2.setFen(&quot;8/5pk1/8/4q1pp/8/2Q4P/1P3PP1/6K1 b - - 1 38&quot;);</span>
+<span class="nc" id="L62">		game2.setResult(Results.black_wins);</span>
+<span class="nc" id="L63">		game2.setWhite(player4);</span>
+<span class="nc" id="L64">		game2.setBlack(player3);</span>
+<span class="nc" id="L65">		game2.setYear(&quot;1859&quot;);</span>
+<span class="nc" id="L66">		addGame(game2);</span>
 		
-<span class="nc" id="L67">		Game game3=new Game();</span>
-<span class="nc" id="L68">		game3.setFen(&quot;8/8/3b2k1/8/8/p7/P1K5/8 b - - 3 44&quot;);</span>
-<span class="nc" id="L69">		game3.setResult(&quot;draw&quot;);</span>
-<span class="nc" id="L70">		game3.setWhite(player3);</span>
-<span class="nc" id="L71">		game3.setBlack(player4);</span>
-<span class="nc" id="L72">		game3.setYear(&quot;1859&quot;);</span>
-<span class="nc" id="L73">		addGame(game3);</span>
+<span class="nc" id="L68">		Game game3=new Game();</span>
+<span class="nc" id="L69">		game3.setFen(&quot;8/8/3b2k1/8/8/p7/P1K5/8 b - - 3 44&quot;);</span>
+<span class="nc" id="L70">		game3.setResult(Results.draw);</span>
+<span class="nc" id="L71">		game3.setWhite(player3);</span>
+<span class="nc" id="L72">		game3.setBlack(player4);</span>
+<span class="nc" id="L73">		game3.setYear(&quot;1859&quot;);</span>
+<span class="nc" id="L74">		addGame(game3);</span>
 		
-<span class="nc" id="L75">		Game game5=new Game();</span>
-<span class="nc" id="L76">		game5.setFen(&quot;rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1&quot;);</span>
-<span class="nc" id="L77">		game5.setResult(&quot;&quot;);</span>
-<span class="nc" id="L78">		game5.setWhite(player6);</span>
-<span class="nc" id="L79">		game5.setBlack(player5);</span>
-<span class="nc" id="L80">		game5.setYear(&quot;2021&quot;);</span>
-<span class="nc" id="L81">		addGame(game5);</span>
-<span class="nc" id="L82">	}</span>
+<span class="nc" id="L76">		Game game5=new Game();</span>
+<span class="nc" id="L77">		game5.setFen(&quot;rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1&quot;);</span>
+<span class="nc" id="L78">		game5.setResult(Results.ongoing);</span>
+<span class="nc" id="L79">		game5.setWhite(player6);</span>
+<span class="nc" id="L80">		game5.setBlack(player5);</span>
+<span class="nc" id="L81">		game5.setYear(&quot;2021&quot;);</span>
+<span class="nc" id="L82">		addGame(game5);</span>
+		
+<span class="nc" id="L84">		Game game6 = new Game(&quot;meh&quot;);</span>
+<span class="nc" id="L85">		addGame(game6);</span>
+<span class="nc" id="L86">	}</span>
 	
 	// Game related operations
 	@Override
 	public void addGame(Game g) {
-<span class="nc" id="L87">		String id = &quot;g&quot; + index++;	</span>
-<span class="nc" id="L88">		g.setId(id);</span>
-<span class="nc" id="L89">		gameMap.put(id,g);</span>
-<span class="nc" id="L90">	}</span>
+<span class="nc" id="L91">		String id = &quot;g&quot; + index++;	</span>
+<span class="nc" id="L92">		g.setId(id);</span>
+<span class="nc" id="L93">		gameMap.put(id,g);</span>
+<span class="nc" id="L94">	}</span>
 	
 	@Override
 	public Collection&lt;Game&gt; getAllGames() {
-<span class="nc" id="L94">		return gameMap.values();</span>
+<span class="nc" id="L98">		return gameMap.values();</span>
 	}
 
 	@Override
 	public Game getGame(String id) {
-<span class="nc" id="L99">		return gameMap.get(id);</span>
+<span class="nc" id="L103">		return gameMap.get(id);</span>
 	}
 	
 	@Override
 	public void updateGame(Game g) {
-<span class="nc" id="L104">		gameMap.put(g.getId(),g);</span>
-<span class="nc" id="L105">	}</span>
+<span class="nc" id="L108">		gameMap.put(g.getId(),g);</span>
+<span class="nc" id="L109">	}</span>
 
 	@Override
-	public void removeGame(String id) {	
-<span class="nc" id="L109">		gameMap.remove(id);</span>
-<span class="nc" id="L110">	}</span>
+	public void deleteGame(String id) {	
+<span class="nc" id="L113">		gameMap.remove(id);</span>
+<span class="nc" id="L114">	}</span>
 
 	@Override
 	public void addMove(String gameId, String move) {
-<span class="nc" id="L114">		gameMap.get(gameId).addMove(move);</span>
+<span class="nc" id="L118">		gameMap.get(gameId).addMove(move);</span>
 		
-<span class="nc" id="L116">	}</span>
+<span class="nc" id="L120">	}</span>
 
 	@Override
 	public void addPlayMove(String gameId, String move) {
-<span class="nc" id="L120">		gameMap.get(gameId).addPlayMove(move);</span>
-<span class="nc" id="L121">	}</span>
+<span class="nc" id="L124">		gameMap.get(gameId).addPlayMove(move);</span>
+<span class="nc" id="L125">	}</span>
 	
 	
 	// Player related operations
 	
 	@Override
 	public void addPlayer(Player p) {
-<span class="nc" id="L128">		String id = &quot;p&quot; + index++;</span>
-<span class="nc" id="L129">		p.setId(id);</span>
-<span class="nc" id="L130">		playerMap.put(id, p);</span>
-<span class="nc" id="L131">	}</span>
+<span class="nc" id="L132">		String id = &quot;p&quot; + index++;</span>
+<span class="nc" id="L133">		p.setId(id);</span>
+<span class="nc" id="L134">		playerMap.put(id, p);</span>
+<span class="nc" id="L135">	}</span>
 	
 	@Override
 	public Collection&lt;Player&gt; getAllPlayers() {
-<span class="nc" id="L135">			return playerMap.values();</span>
+<span class="nc" id="L139">			return playerMap.values();</span>
 	}
 
 	@Override
 	public Player getPlayer(String playerId) {
-<span class="nc" id="L140">		return playerMap.get(playerId);</span>
+<span class="nc" id="L144">		return playerMap.get(playerId);</span>
 	}
 
 	@Override
 	public void updatePlayer(Player p) {
-<span class="nc" id="L145">		Player player = playerMap.get(p.getId());</span>
-<span class="nc" id="L146">		player.setName(p.getName());</span>
-<span class="nc" id="L147">		player.setRating(p.getRating());</span>
-<span class="nc" id="L148">	}</span>
+<span class="nc" id="L149">		Player player = playerMap.get(p.getId());</span>
+<span class="nc" id="L150">		player.setName(p.getName());</span>
+<span class="nc" id="L151">		player.setRating(p.getRating());</span>
+<span class="nc" id="L152">	}</span>
 
 	@Override
-	public void removePlayer(String playerId) {
-<span class="nc" id="L152">		playerMap.remove(playerId);</span>
-<span class="nc" id="L153">	}</span>
+	public void deletePlayer(String playerId) {
+<span class="nc" id="L156">		playerMap.remove(playerId);</span>
+<span class="nc" id="L157">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

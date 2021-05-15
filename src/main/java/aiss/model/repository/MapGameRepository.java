@@ -6,6 +6,7 @@ import java.util.Map;
 
 import aiss.model.Game;
 import aiss.model.Player;
+import aiss.model.Results;
 
 public class MapGameRepository implements GameRepository {
 	Map<String, Game> gameMap;
@@ -50,7 +51,7 @@ public class MapGameRepository implements GameRepository {
 		// Create Games
 		Game game1=new Game();
 		game1.setFen("2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24");
-		game1.setResult("black wins");
+		game1.setResult(Results.black_wins);
 		game1.setWhite(player2);
 		game1.setBlack(player1);
 		game1.setYear("2013");
@@ -58,7 +59,7 @@ public class MapGameRepository implements GameRepository {
 		
 		Game game2=new Game();
 		game2.setFen("8/5pk1/8/4q1pp/8/2Q4P/1P3PP1/6K1 b - - 1 38");
-		game2.setResult("black wins");
+		game2.setResult(Results.black_wins);
 		game2.setWhite(player4);
 		game2.setBlack(player3);
 		game2.setYear("1859");
@@ -66,7 +67,7 @@ public class MapGameRepository implements GameRepository {
 		
 		Game game3=new Game();
 		game3.setFen("8/8/3b2k1/8/8/p7/P1K5/8 b - - 3 44");
-		game3.setResult("draw");
+		game3.setResult(Results.draw);
 		game3.setWhite(player3);
 		game3.setBlack(player4);
 		game3.setYear("1859");
@@ -74,11 +75,14 @@ public class MapGameRepository implements GameRepository {
 		
 		Game game5=new Game();
 		game5.setFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-		game5.setResult("");
+		game5.setResult(Results.ongoing);
 		game5.setWhite(player6);
 		game5.setBlack(player5);
 		game5.setYear("2021");
 		addGame(game5);
+		
+		Game game6 = new Game("meh");
+		addGame(game6);
 	}
 	
 	// Game related operations
@@ -105,7 +109,7 @@ public class MapGameRepository implements GameRepository {
 	}
 
 	@Override
-	public void removeGame(String id) {	
+	public void deleteGame(String id) {	
 		gameMap.remove(id);
 	}
 
@@ -148,7 +152,7 @@ public class MapGameRepository implements GameRepository {
 	}
 
 	@Override
-	public void removePlayer(String playerId) {
+	public void deletePlayer(String playerId) {
 		playerMap.remove(playerId);
 	}
 }

@@ -14,7 +14,7 @@ public class Game {
 	private String fen;
 	private String year;
 	private Player white;
-	private String result;
+	private Results result;
 	private Player black;
 	private String image;
 	private String bestMove;
@@ -39,7 +39,7 @@ public class Game {
 
 	public void setFen(String fen) {
 		this.fen = fen;
-		this.image = String.format("http://chessboardimage.com/%s.png",fen);
+		this.image = String.format("http://chessboardimage.com/%s.png",fen.split(" ")[0]);
 		com.netsensia.rivalchess.model.Board board = com.netsensia.rivalchess.model.Board.fromFen(fen);
 		Search searcher = new Search();
 		searcher.setBoard(board);
@@ -74,11 +74,11 @@ public class Game {
 		this.black = black;
 	}
 	
-	public String getResult() {
+	public Results getResult() {
 		return result;
 	}
 
-	public void setResult(String result) {
+	public void setResult(Results result) {
 		this.result = result;
 	}
 	
@@ -104,9 +104,10 @@ public class Game {
 		}
 		
 		if (board.isDraw()) {
-			setResult("draw");
+			setResult(Results.draw);
 		} else if (board.isMated()) {
-			setResult(String.format("%s wins",side.toLowerCase()));
+			Results result = side.toString().equals("WHITE")? Results.white_wins: Results.black_wins;
+			setResult(result);
 		}
 	}
 	
