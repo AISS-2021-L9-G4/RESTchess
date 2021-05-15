@@ -80,80 +80,77 @@ import aiss.model.Results;
 <span class="nc" id="L80">		game5.setBlack(player5);</span>
 <span class="nc" id="L81">		game5.setYear(&quot;2021&quot;);</span>
 <span class="nc" id="L82">		addGame(game5);</span>
-		
-<span class="nc" id="L84">		Game game6 = new Game(&quot;meh&quot;);</span>
-<span class="nc" id="L85">		addGame(game6);</span>
-<span class="nc" id="L86">	}</span>
+<span class="nc" id="L83">	}</span>
 	
 	// Game related operations
 	@Override
 	public void addGame(Game g) {
-<span class="nc" id="L91">		String id = &quot;g&quot; + index++;	</span>
-<span class="nc" id="L92">		g.setId(id);</span>
-<span class="nc" id="L93">		gameMap.put(id,g);</span>
-<span class="nc" id="L94">	}</span>
+<span class="nc" id="L88">		String id = &quot;g&quot; + index++;	</span>
+<span class="nc" id="L89">		g.setId(id);</span>
+<span class="nc" id="L90">		gameMap.put(id,g);</span>
+<span class="nc" id="L91">	}</span>
 	
 	@Override
 	public Collection&lt;Game&gt; getAllGames() {
-<span class="nc" id="L98">		return gameMap.values();</span>
+<span class="nc" id="L95">		return gameMap.values();</span>
 	}
 
 	@Override
 	public Game getGame(String id) {
-<span class="nc" id="L103">		return gameMap.get(id);</span>
+<span class="nc" id="L100">		return gameMap.get(id);</span>
 	}
 	
 	@Override
 	public void updateGame(Game g) {
-<span class="nc" id="L108">		gameMap.put(g.getId(),g);</span>
-<span class="nc" id="L109">	}</span>
+<span class="nc" id="L105">		gameMap.put(g.getId(),g);</span>
+<span class="nc" id="L106">	}</span>
 
 	@Override
 	public void deleteGame(String id) {	
-<span class="nc" id="L113">		gameMap.remove(id);</span>
-<span class="nc" id="L114">	}</span>
+<span class="nc" id="L110">		gameMap.remove(id);</span>
+<span class="nc" id="L111">	}</span>
 
 	@Override
 	public void addMove(String gameId, String move) {
-<span class="nc" id="L118">		gameMap.get(gameId).addMove(move);</span>
+<span class="nc" id="L115">		gameMap.get(gameId).addMove(move);</span>
 		
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L117">	}</span>
 
 	@Override
 	public void addPlayMove(String gameId, String move) {
-<span class="nc" id="L124">		gameMap.get(gameId).addPlayMove(move);</span>
-<span class="nc" id="L125">	}</span>
+<span class="nc" id="L121">		gameMap.get(gameId).addPlayMove(move);</span>
+<span class="nc" id="L122">	}</span>
 	
 	
 	// Player related operations
 	
 	@Override
 	public void addPlayer(Player p) {
-<span class="nc" id="L132">		String id = &quot;p&quot; + index++;</span>
-<span class="nc" id="L133">		p.setId(id);</span>
-<span class="nc" id="L134">		playerMap.put(id, p);</span>
-<span class="nc" id="L135">	}</span>
+<span class="nc" id="L129">		String id = &quot;p&quot; + index++;</span>
+<span class="nc" id="L130">		p.setId(id);</span>
+<span class="nc" id="L131">		playerMap.put(id, p);</span>
+<span class="nc" id="L132">	}</span>
 	
 	@Override
 	public Collection&lt;Player&gt; getAllPlayers() {
-<span class="nc" id="L139">			return playerMap.values();</span>
+<span class="nc" id="L136">			return playerMap.values();</span>
 	}
 
 	@Override
 	public Player getPlayer(String playerId) {
-<span class="nc" id="L144">		return playerMap.get(playerId);</span>
+<span class="nc" id="L141">		return playerMap.get(playerId);</span>
 	}
 
 	@Override
 	public void updatePlayer(Player p) {
-<span class="nc" id="L149">		Player player = playerMap.get(p.getId());</span>
-<span class="nc" id="L150">		player.setName(p.getName());</span>
-<span class="nc" id="L151">		player.setRating(p.getRating());</span>
-<span class="nc" id="L152">	}</span>
+<span class="nc" id="L146">		Player player = playerMap.get(p.getId());</span>
+<span class="nc" id="L147">		player.setName(p.getName());</span>
+<span class="nc" id="L148">		player.setRating(p.getRating());</span>
+<span class="nc" id="L149">	}</span>
 
 	@Override
 	public void deletePlayer(String playerId) {
-<span class="nc" id="L156">		playerMap.remove(playerId);</span>
-<span class="nc" id="L157">	}</span>
+<span class="nc" id="L153">		playerMap.remove(playerId);</span>
+<span class="nc" id="L154">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

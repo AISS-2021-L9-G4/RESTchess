@@ -22,7 +22,7 @@ public class Game {
 <span class="nc" id="L22">	public Game() {}</span>
 	
 <span class="nc" id="L24">	public Game(String fen) {</span>
-<span class="nc" id="L25">		this.fen = fen;</span>
+<span class="nc" id="L25">		setFen(fen);</span>
 <span class="nc" id="L26">	}</span>
 	
 	public String getId() {
@@ -39,85 +39,86 @@ public class Game {
 
 	public void setFen(String fen) {
 <span class="nc" id="L41">		this.fen = fen;</span>
-<span class="nc" id="L42">		this.image = String.format(&quot;http://chessboardimage.com/%s.png&quot;,fen.split(&quot; &quot;)[0]);</span>
+//		this.image = String.format(&quot;http://chessboardimage.com/%s.png&quot;,fen.split(&quot; &quot;)[0]);
 <span class="nc" id="L43">		com.netsensia.rivalchess.model.Board board = com.netsensia.rivalchess.model.Board.fromFen(fen);</span>
-<span class="nc" id="L44">		Search searcher = new Search();</span>
-<span class="nc" id="L45">		searcher.setBoard(board);</span>
-<span class="nc" id="L46">	    searcher.setMillisToThink(5000);</span>
-<span class="nc" id="L47">	    searcher.setSearchDepth(5);</span>
-<span class="nc" id="L48">	    searcher.go();</span>
-<span class="nc" id="L49">		this.bestMove = searcher.getCurrentPath().toString().split(&quot; &quot;)[0];</span>
+<span class="nc" id="L44">		this.image = board.toString();</span>
+<span class="nc" id="L45">		Search searcher = new Search();</span>
+<span class="nc" id="L46">		searcher.setBoard(board);</span>
+<span class="nc" id="L47">	    searcher.setMillisToThink(5000);</span>
+<span class="nc" id="L48">	    searcher.setSearchDepth(5);</span>
+<span class="nc" id="L49">	    searcher.go();</span>
+<span class="nc" id="L50">		this.bestMove = searcher.getCurrentPath().toString().split(&quot; &quot;)[0];</span>
 		
-<span class="nc" id="L51">	}</span>
+<span class="nc" id="L52">	}</span>
 	
 	public String getYear() {
-<span class="nc" id="L54">		return year;</span>
+<span class="nc" id="L55">		return year;</span>
 	}
 
 	public void setYear(String year) {
-<span class="nc" id="L58">		this.year = year;</span>
-<span class="nc" id="L59">	}</span>
+<span class="nc" id="L59">		this.year = year;</span>
+<span class="nc" id="L60">	}</span>
 
 	public Player getWhite() {
-<span class="nc" id="L62">		return white;</span>
+<span class="nc" id="L63">		return white;</span>
 	}
 
 	public void setWhite(Player white) {
-<span class="nc" id="L66">		this.white = white;</span>
-<span class="nc" id="L67">	}</span>
+<span class="nc" id="L67">		this.white = white;</span>
+<span class="nc" id="L68">	}</span>
 
 	public Player getBlack() {
-<span class="nc" id="L70">		return black;</span>
+<span class="nc" id="L71">		return black;</span>
 	}
 
 	public void setBlack(Player black) {
-<span class="nc" id="L74">		this.black = black;</span>
-<span class="nc" id="L75">	}</span>
+<span class="nc" id="L75">		this.black = black;</span>
+<span class="nc" id="L76">	}</span>
 	
 	public Results getResult() {
-<span class="nc" id="L78">		return result;</span>
+<span class="nc" id="L79">		return result;</span>
 	}
 
 	public void setResult(Results result) {
-<span class="nc" id="L82">		this.result = result;</span>
-<span class="nc" id="L83">	}</span>
+<span class="nc" id="L83">		this.result = result;</span>
+<span class="nc" id="L84">	}</span>
 	
 	public String getimage() {
-<span class="nc" id="L86">		return image;</span>
+<span class="nc" id="L87">		return image;</span>
 	}
 	public String getBestMove() {
-<span class="nc" id="L89">		return bestMove;</span>
+<span class="nc" id="L90">		return bestMove;</span>
 	}
 	
 	public void addMove(String move) {
-<span class="nc" id="L93">		Board board = new Board();</span>
-<span class="nc" id="L94">		board.loadFromFen(fen);</span>
-<span class="nc" id="L95">		String side = board.getSideToMove().toString();</span>
+<span class="nc" id="L94">		Board board = new Board();</span>
+<span class="nc" id="L95">		board.loadFromFen(fen);</span>
+<span class="nc" id="L96">		String side = board.getSideToMove().toString();</span>
 		
-<span class="nc" id="L97">		Move m = new Move(Square.valueOf(move.substring(0, 2).toUpperCase()), Square.valueOf(move.substring(2, 4).toUpperCase()));</span>
+<span class="nc" id="L98">		Move m = new Move(Square.valueOf(move.substring(0, 2).toUpperCase()), Square.valueOf(move.substring(2, 4).toUpperCase()));</span>
 		
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (board.legalMoves().contains(m)) {</span>
-<span class="nc" id="L100">			board.doMove(m,false);</span>
-<span class="nc" id="L101">			setFen(board.getFen());</span>
-<span class="nc" id="L102">		} else {</span>
-<span class="nc" id="L103">			throw new MoveException(&quot;The input move is not a legal move for the current position&quot;);</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (board.legalMoves().contains(m)) {</span>
+<span class="nc" id="L101">			board.doMove(m,false);</span>
+<span class="nc" id="L102">			setFen(board.getFen());</span>
+<span class="nc" id="L103">		} else {</span>
+<span class="nc" id="L104">			throw new MoveException(&quot;The input move is not a legal move for the current position&quot;);</span>
 		}
 		
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (board.isDraw()) {</span>
-<span class="nc" id="L107">			setResult(Results.draw);</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		} else if (board.isMated()) {</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">			Results result = side.toString().equals(&quot;WHITE&quot;)? Results.white_wins: Results.black_wins;</span>
-<span class="nc" id="L110">			setResult(result);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (board.isDraw()) {</span>
+<span class="nc" id="L108">			setResult(Results.draw);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		} else if (board.isMated()) {</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">			Results result = side.toString().equals(&quot;WHITE&quot;)? Results.white_wins: Results.black_wins;</span>
+<span class="nc" id="L111">			setResult(result);</span>
 		}
-<span class="nc" id="L112">	}</span>
+<span class="nc" id="L113">	}</span>
 	
 	public void addPlayMove(String move) {
-<span class="nc" id="L115">		Board board = new Board();</span>
-<span class="nc" id="L116">		addMove(move);</span>
-<span class="nc" id="L117">		board.loadFromFen(fen);</span>
-<span class="nc bnc" id="L118" title="All 4 branches missed.">		if (!(board.isDraw()||board.isMated())) {</span>
-<span class="nc" id="L119">			addMove(getBestMove());</span>
+<span class="nc" id="L116">		Board board = new Board();</span>
+<span class="nc" id="L117">		addMove(move);</span>
+<span class="nc" id="L118">		board.loadFromFen(fen);</span>
+<span class="nc bnc" id="L119" title="All 4 branches missed.">		if (!(board.isDraw()||board.isMated())) {</span>
+<span class="nc" id="L120">			addMove(getBestMove());</span>
 		}
-<span class="nc" id="L121">	}</span>
+<span class="nc" id="L122">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

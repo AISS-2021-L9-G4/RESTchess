@@ -80,9 +80,6 @@ public class MapGameRepository implements GameRepository {
 		game5.setBlack(player5);
 		game5.setYear("2021");
 		addGame(game5);
-		
-		Game game6 = new Game("meh");
-		addGame(game6);
 	}
 	
 	// Game related operations

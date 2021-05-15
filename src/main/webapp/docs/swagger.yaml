@@ -1,6 +1,6 @@
 openapi: 3.0.0
 servers:
-  - url: https://aiss-l9-g4.ew.r.appspot.com
+  - url: https://aiss-l9-g4.ew.r.appspot.com/api
 info:
   description: A RESTful chess API.
   version: "1.0.0"
@@ -31,9 +31,16 @@ paths:
           required: false
           schema:
             type: string
+            enum:
+              - rating
+              - "-rating"
+              - year
+              - "-year"
+              - result
+              - "-result"
         - in: query
           name: fen
-          description: Filter results by game with the same position as in the input fen.
+          description: Filter results by games with the same position as in the input fen.
           required: false
           schema:
             type: string
@@ -62,41 +69,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  required: 
-                    - fen
-                  properties:
-                    id:
-                      type: string
-                    fen:
-                      type: string
-                    year:
-                      type: string
-                    white:
-                      type: object
-                    black:
-                      type: object
-                    result:
-                      type: object
-                    image:
-                      type: string
-                  example:
-                    id:"g6"
-                    fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
-                    year:"2013"
-                    white:{
-                      id:"p1"
-                      name:"Levon Aronian"
-                      rating:"2802"
-                    }
-                    black:{
-                      id:"p0"
-                      name:"Viswanathan Anand"
-                      rating:"2772"
-                    }
-                    result:"black_wins"
-                    image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
-                    bestMove:"c3d5"
+                  $ref: '#/components/schemas/Game'
                   
         '400':
           description: Bad request
@@ -115,41 +88,7 @@ paths:
         content:
             application/json:
               schema:
-                  type: object
-                  required: 
-                    - fen
-                  properties:
-                    id:
-                      type: string
-                    fen:
-                      type: string
-                    year:
-                      type: string
-                    white:
-                      type: object
-                    black:
-                      type: object
-                    result:
-                      type: object
-                    image:
-                      type: string
-                  example:
-                    id:"g6"
-                    fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
-                    year:"2013"
-                    white:{
-                      id:"p1"
-                      name:"Levon Aronian"
-                      rating:"2802"
-                    }
-                    black:{
-                      id:"p0"
-                      name:"Viswanathan Anand"
-                      rating:"2772"
-                    }
-                    result:"black_wins"
-                    image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
-                    bestMove:"c3d5"
+                  $ref: '#/components/schemas/Game'
         description: Game to be added
     put:
       tags:
@@ -158,7 +97,7 @@ paths:
       operationId: updateGame
       description: Updates a game to the system
       responses:
-        '201':
+        '204':
           description: Game updated
         '404':
           description: Game with gameId=id not found
@@ -166,43 +105,7 @@ paths:
         content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  required: 
-                    - fen
-                  properties:
-                    id:
-                      type: string
-                    fen:
-                      type: string
-                    year:
-                      type: string
-                    white:
-                      type: object
-                    black:
-                      type: object
-                    result:
-                      type: object
-                    image:
-                      type: string
-                  example:
-                    id:"g6"
-                    fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
-                    year:"2013"
-                    white:{
-                      id:"p1"
-                      name:"Levon Aronian"
-                      rating:"2802"
-                    }
-                    black:{
-                      id:"p0"
-                      name:"Viswanathan Anand"
-                      rating:"2772"
-                    }
-                    result:"black_wins"
-                    image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
-                    bestMove:"c3d5"
+                $ref: '#/components/schemas/Game'
         description: Game to be updated
   '/games/{id}':
     get:
@@ -239,7 +142,7 @@ paths:
       description: |
         Deletes game with gameId=id. 
       responses:
-        '200':
+        '204':
           description: Game deleted
         '404':
           description: Game with gameId=id not found
@@ -265,46 +168,12 @@ paths:
       description: |
         Adds a move to a game. 
       responses:
-        '200':
+        '201':
           description: Updated Game
           content:
             application/json:
               schema:
-                type: object
-                required: 
-                  - fen
-                properties:
-                  id:
-                    type: string
-                  fen:
-                    type: string
-                  year:
-                    type: string
-                  white:
-                    type: object
-                  black:
-                    type: object
-                  result:
-                    type: object
-                  image:
-                    type: string
-                example:
-                  id:"g6"
-                  fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
-                  year:"2013"
-                  white:{
-                    id:"p1"
-                    name:"Levon Aronian"
-                    rating:"2802"
-                  }
-                  black:{
-                    id:"p0"
-                    name:"Viswanathan Anand"
-                    rating:"2772"
-                  }
-                  result:"black_wins"
-                  image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
-                  bestMove:"c3d5"
+                $ref: '#/components/schemas/Game'
         '400':
           description: Illegal move for the current position
         '404':
@@ -331,47 +200,229 @@ paths:
       description: |
         Adds a player move and an engine response (bestMove) to the game.
       responses:
-        '200':
+        '201':
           description: Updated Game
           content:
             application/json:
               schema:
-                type: object
-                required: 
-                  - fen
-                properties:
-                  id:
-                    type: string
-                  fen:
-                    type: string
-                  year:
-                    type: string
-                  white:
-                    type: object
-                  black:
-                    type: object
-                  result:
-                    type: object
-                  image:
-                    type: string
-                example:
-                  id:"g6"
-                  fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
-                  year:"2013"
-                  white:{
-                    id:"p1"
-                    name:"Levon Aronian"
-                    rating:"2802"
-                  }
-                  black:{
-                    id:"p0"
-                    name:"Viswanathan Anand"
-                    rating:"2772"
-                  }
-                  result:"black_wins"
-                  image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
-                  bestMove:"c3d5"
+                $ref: '#/components/schemas/Game'
         '400':
           description: Illegal move for the current position
         '404':
           description: Game with gameId=id not found
+  /players:
+    get:
+      tags:
+        - players
+      summary: Gets all players
+      operationId: getAllPlayers
+      description: Gets all players
+      parameters:
+        - name: order
+          in: query
+          description: Order player by average rating and name.
+          required: false
+          schema:
+            type: string
+            enum:
+              - name
+              - "-name"
+              - rating
+              - "-rating"
+        - name: name
+          in: query
+          description: Filter players with the same name as in the input name.
+          required: false
+          schema:
+            type: string
+        - name: rating
+          in: query
+          description: Filter players with the same rating as in the input rating.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of players to return.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: offset
+          in: query
+          description: Offset of the results.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+      responses:
+        '200':
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+        '400':
+          description: Bad request
+    post: 
+      tags: 
+        - players
+      summary: Adds a player
+      operationId: addPlayer
+      description: Adds a player to the system
+      requestBody: 
+        content:
+          aplication/json: 
+            schema:
+              $ref: '#/components/schemas/Player'
+        description: Player to be added
+      responses: 
+        '201':
+          description: Player created
+          content:
+            aplication/json: 
+              schema:
+                $ref: '#/components/schemas/Player'
+        '400':
+          description: Bad request
+    put:
+      tags:
+        - players
+      summary: Updates a player
+      operationId: updatePlayer
+      description: Updates a player to the system 
+      requestBody: 
+        content:
+          aplication/json: 
+            schema:
+              $ref: '#/components/schemas/Player'
+        description: Player to be updated
+      responses:
+        '204':
+          description: Player updated
+        '400':
+          description: Bad request
+        '404':
+          description: Player not found
+  '/players/{id}':
+    get:
+      tags:
+        - players
+      summary: Gets a player
+      description: Gets a player
+      operationId: getPlayer
+      parameters:
+        - name: id
+          in: path
+          description: Id of the player
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Player found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Player not found
+    delete:
+      tags:
+        - players
+      summary: Deletes a player
+      description: Deletes a player
+      operationId: deletePlayer
+      parameters:
+        - name: id
+          in: path
+          description: Id of the player
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Player deleted
+        '404':
+          description: Player not found
+components:
+  schemas:
+    Player:
+      type: object
+      required: 
+        - name
+        - rating
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        rating:
+          type: string
+      example: 
+        id: p0
+        name: Viswanathan Anand
+        rating: '2772'
+    Game:
+      type: object
+      required: 
+        - fen
+      properties:
+        id:
+          type: string
+        fen:
+          type: string
+        year:
+          type: string
+        white:
+          type: object
+          required: 
+            - name
+            - rating
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            rating:
+              type: string
+        black:
+          type: object
+          required: 
+            - name
+            - rating
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            rating:
+              type: string
+        result:
+          type: string
+          enum:
+            - white_wins
+            - black_wins
+            - draw
+            - ongoing
+        image:
+          type: string
+      example:
+          id: g6
+          fen: "2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
+          year: '2013'
+          white:
+            id: p1
+            name: "Levon Aronian"
+            rating: '2802'
+          black:
+            id: p0
+            name: "Viswanathan Anand"
+            rating: '2772'
+          result: black_wins
+          image: http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png
+          bestMove: c3d5

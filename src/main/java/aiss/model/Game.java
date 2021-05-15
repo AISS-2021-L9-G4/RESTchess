@@ -22,7 +22,7 @@ public class Game {
 	public Game() {}
 	
 	public Game(String fen) {
-		this.fen = fen;
+		setFen(fen);
 	}
 	
 	public String getId() {
