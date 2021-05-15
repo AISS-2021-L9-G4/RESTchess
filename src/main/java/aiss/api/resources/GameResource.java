@@ -153,6 +153,7 @@ public class GameResource {
 	public Response addGame(@Context UriInfo uriInfo, Game game) {
 		if (game.getFen() == null || "".equals(game.getFen()))
 			throw new BadRequestException("The fen must not be null");
+		
 		repository.addGame(game);
 
 		// Builds the response. Returns the game that has just been added.
@@ -221,7 +222,7 @@ public class GameResource {
 		try {
 			repository.addMove(gameId, move);
 		} catch (MoveException e) {
-			throw new BadRequestException(String.format("Ilegal Move for the current position. fen: %s; Image: %s",game.getFen(),game.getimage()));
+			throw new BadRequestException(String.format("Ilegal Move (%s) for the current position. fen: %s; Image: %s",move,game.getFen(),game.getimage()));
 		}
 		// Builds the response
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
@@ -243,7 +244,7 @@ public class GameResource {
 		try {
 			repository.addPlayMove(gameId, move);
 		} catch (MoveException e) {
-			throw new BadRequestException(String.format("Ilegal Move for the current position. fen: %s; Image: %s",game.getFen(),game.getimage()));
+			throw new BadRequestException(String.format("Ilegal Move (%s) for the current position. fen: %s; Image: %s",move,game.getFen(),game.getimage()));
 		}
 		
 		// Builds the response

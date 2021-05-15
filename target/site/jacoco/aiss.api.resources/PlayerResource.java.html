@@ -66,7 +66,7 @@ public class PlayerResource {
 <span class="nc" id="L66">					result.add(player);</span>
 				}
 			}
-<span class="nc" id="L69">		}</span>
+		}
 		
 		// Order
 <span class="nc bnc" id="L72" title="All 2 branches missed.">		if(order != null) {</span>
@@ -95,7 +95,7 @@ public class PlayerResource {
 <span class="nc bnc" id="L95" title="All 2 branches missed.">				for(int i = offset; i &lt; size; i++) {</span>
 <span class="nc" id="L96">					resultPagination.add(result.get(i));</span>
 				}
-			} else {
+<span class="nc" id="L98">			} else {</span>
 <span class="nc" id="L99">				throw new BadRequestException(&quot;The limit parameter must be greater than 0 and lower than &quot; + result.size() + &quot;.&quot;);</span>
 			}
 <span class="nc bnc" id="L101" title="All 2 branches missed.">		} else if(offset == null) {</span>
@@ -103,12 +103,12 @@ public class PlayerResource {
 <span class="nc bnc" id="L103" title="All 2 branches missed.">				for(int i = 0; i &lt; limit; i++) {</span>
 <span class="nc" id="L104">					resultPagination.add(result.get(i));</span>
 				}
-			} else {
+<span class="nc" id="L106">			} else {</span>
 <span class="nc bnc" id="L107" title="All 2 branches missed.">				for(Player player : result) {</span>
 <span class="nc" id="L108">					resultPagination.add(player);</span>
-<span class="nc" id="L109">				}</span>
+				}
 			}
-		} else {
+<span class="nc" id="L111">		} else {</span>
 <span class="nc" id="L112">			throw new BadRequestException(&quot;The offset parameter must be greater than 0 and lower than &quot; + result.size() + &quot;.&quot;);</span>
 		}
 		

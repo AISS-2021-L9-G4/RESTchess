@@ -1,11 +1,11 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 RESTchess,aiss.model,Results,44,0,0,0,2,0,1,0,1,0
-RESTchess,aiss.model,Player,45,0,0,0,20,0,9,0,9,0
+RESTchess,aiss.model,Player,36,9,0,0,16,4,8,1,8,1
 RESTchess,aiss.model,Game,191,0,12,0,53,0,24,0,18,0
-RESTchess,aiss.model.repository,MapGameRepository,302,0,2,0,78,0,17,0,16,0
+RESTchess,aiss.model.repository,MapGameRepository,300,0,2,0,78,0,17,0,16,0
 RESTchess,aiss.api,ChessApplication,29,0,0,0,8,0,3,0,3,0
-RESTchess,aiss.api.resources,PlayerResource,397,0,74,0,71,0,45,0,8,0
-RESTchess,aiss.api.resources,GameResource,602,0,96,0,108,0,58,0,10,0
+RESTchess,aiss.api.resources,PlayerResource,395,0,74,0,72,0,45,0,8,0
+RESTchess,aiss.api.resources,GameResource,580,0,88,0,103,0,54,0,10,0
 RESTchess,aiss.api.resources.comparators,ComparatorRatingGame,26,0,0,0,3,0,3,0,3,0
 RESTchess,aiss.api.resources.comparators,ComparatorNamePlayer,9,0,0,0,2,0,2,0,2,0
 RESTchess,aiss.api.resources.comparators,ComparatorRatingPlayer,11,0,0,0,2,0,2,0,2,0

@@ -14,8 +14,8 @@ public class Game {
 	private String fen;
 	private String year;
 	private Player white;
-	private Results result;
 	private Player black;
+	private Results result;
 	private String image;
 	private String bestMove;
 	

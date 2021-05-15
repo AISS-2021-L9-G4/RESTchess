@@ -1,0 +1,377 @@
+openapi: 3.0.0
+servers:
+  - url: https://aiss-l9-g4.ew.r.appspot.com
+info:
+  description: A RESTful chess API.
+  version: "1.0.0"
+  title: RESTchess
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: games
+    description: games
+  - name: players
+    description: players
+paths:
+  /games:
+    get:
+      tags:
+        - games
+      summary: Gets all games
+      operationId: getAllGames
+      description: |
+        Gets all games. 
+      parameters:
+        - in: query
+          name: order
+          description: Order results by average player rating, year and result.
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: fen
+          description: Filter results by game with the same position as in the input fen.
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Maximum number of games to return.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+          
+        - in: query
+          name: offset
+          description: Offset of the results.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+      responses:
+        '200':
+          description: Search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required: 
+                    - fen
+                  properties:
+                    id:
+                      type: string
+                    fen:
+                      type: string
+                    year:
+                      type: string
+                    white:
+                      type: object
+                    black:
+                      type: object
+                    result:
+                      type: object
+                    image:
+                      type: string
+                  example:
+                    id:"g6"
+                    fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
+                    year:"2013"
+                    white:{
+                      id:"p1"
+                      name:"Levon Aronian"
+                      rating:"2802"
+                    }
+                    black:{
+                      id:"p0"
+                      name:"Viswanathan Anand"
+                      rating:"2772"
+                    }
+                    result:"black_wins"
+                    image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
+                    bestMove:"c3d5"
+                  
+        '400':
+          description: Bad request
+    post:
+      tags:
+        - games
+      summary: Adds a game
+      operationId: addGame
+      description: Adds a game to the system
+      responses:
+        '201':
+          description: Game created
+        '400':
+          description: Bad request
+      requestBody:
+        content:
+            application/json:
+              schema:
+                  type: object
+                  required: 
+                    - fen
+                  properties:
+                    id:
+                      type: string
+                    fen:
+                      type: string
+                    year:
+                      type: string
+                    white:
+                      type: object
+                    black:
+                      type: object
+                    result:
+                      type: object
+                    image:
+                      type: string
+                  example:
+                    id:"g6"
+                    fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
+                    year:"2013"
+                    white:{
+                      id:"p1"
+                      name:"Levon Aronian"
+                      rating:"2802"
+                    }
+                    black:{
+                      id:"p0"
+                      name:"Viswanathan Anand"
+                      rating:"2772"
+                    }
+                    result:"black_wins"
+                    image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
+                    bestMove:"c3d5"
+        description: Game to be added
+    put:
+      tags:
+        - games
+      summary: Updates a game
+      operationId: updateGame
+      description: Updates a game to the system
+      responses:
+        '201':
+          description: Game updated
+        '404':
+          description: Game with gameId=id not found
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required: 
+                    - fen
+                  properties:
+                    id:
+                      type: string
+                    fen:
+                      type: string
+                    year:
+                      type: string
+                    white:
+                      type: object
+                    black:
+                      type: object
+                    result:
+                      type: object
+                    image:
+                      type: string
+                  example:
+                    id:"g6"
+                    fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
+                    year:"2013"
+                    white:{
+                      id:"p1"
+                      name:"Levon Aronian"
+                      rating:"2802"
+                    }
+                    black:{
+                      id:"p0"
+                      name:"Viswanathan Anand"
+                      rating:"2772"
+                    }
+                    result:"black_wins"
+                    image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
+                    bestMove:"c3d5"
+        description: Game to be updated
+  '/games/{id}':
+    get:
+      tags:
+        - games
+      summary: Gets game
+      operationId: getGame
+      parameters:
+        - name: id
+          in: path
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+      description: |
+        Gets game with gameId=id. 
+      responses:
+        '200':
+          description: Search results matching criteria
+        '404':
+          description: Game with gameId=id not found
+    delete:
+      tags:
+        - games
+      summary: Deletes game
+      operationId: deleteGame
+      parameters:
+        - name: id
+          in: path
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+      description: |
+        Deletes game with gameId=id. 
+      responses:
+        '200':
+          description: Game deleted
+        '404':
+          description: Game with gameId=id not found
+  '/games/{id}/{move}':
+    post:
+      tags:
+        - games
+      summary: Adds a move to a game
+      operationId: addMove
+      parameters:
+        - name: id
+          in: path
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+        - name: move
+          in: path
+          description: Move to be added.
+          required: true
+          schema:
+            type: string
+      description: |
+        Adds a move to a game. 
+      responses:
+        '200':
+          description: Updated Game
+          content:
+            application/json:
+              schema:
+                type: object
+                required: 
+                  - fen
+                properties:
+                  id:
+                    type: string
+                  fen:
+                    type: string
+                  year:
+                    type: string
+                  white:
+                    type: object
+                  black:
+                    type: object
+                  result:
+                    type: object
+                  image:
+                    type: string
+                example:
+                  id:"g6"
+                  fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
+                  year:"2013"
+                  white:{
+                    id:"p1"
+                    name:"Levon Aronian"
+                    rating:"2802"
+                  }
+                  black:{
+                    id:"p0"
+                    name:"Viswanathan Anand"
+                    rating:"2772"
+                  }
+                  result:"black_wins"
+                  image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
+                  bestMove:"c3d5"
+        '400':
+          description: Illegal move for the current position
+        '404':
+          description: Game with gameId=id not found
+  '/games/play/{id}/{move}':
+    post:
+      tags:
+        - games
+      summary: Adds a player move and an engine response to the game.
+      operationId: addPlayMove
+      parameters:
+        - name: id
+          in: path
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+        - name: move
+          in: path
+          description: Move to be added.
+          required: true
+          schema:
+            type: string
+      description: |
+        Adds a player move and an engine response (bestMove) to the game.
+      responses:
+        '200':
+          description: Updated Game
+          content:
+            application/json:
+              schema:
+                type: object
+                required: 
+                  - fen
+                properties:
+                  id:
+                    type: string
+                  fen:
+                    type: string
+                  year:
+                    type: string
+                  white:
+                    type: object
+                  black:
+                    type: object
+                  result:
+                    type: object
+                  image:
+                    type: string
+                example:
+                  id:"g6"
+                  fen:"2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K w - - 4 24"
+                  year:"2013"
+                  white:{
+                    id:"p1"
+                    name:"Levon Aronian"
+                    rating:"2802"
+                  }
+                  black:{
+                    id:"p0"
+                    name:"Viswanathan Anand"
+                    rating:"2772"
+                  }
+                  result:"black_wins"
+                  image:"http://chessboardimage.com/2r3k1/pb4p1/4p3/1p3p1q/5Pn1/P1NQb2P/1P4P1/R1B2R1K.png"
+                  bestMove:"c3d5"
+        '400':
+          description: Illegal move for the current position
+        '404':
+          description: Game with gameId=id not found
